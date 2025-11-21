@@ -1,0 +1,130 @@
+class UserProgram:
+    def play(self):
+        print("Welcome To Honai Tower.....")
+        n = int(input("How many beams do you want: "))
+        h = HonaiTower(n)
+
+        while h.count3 != n:
+            print()
+            h.print_tower()
+            print()
+
+            move = h.get_input()
+            while not h.change(move[0], move[1]):
+                print("Not Possible to move, Enter valid move")
+                move = h.get_input()
+
+        print()
+        h.print_tower()
+        print()
+        print("Congratulations The Game is Completed🥳")
+
+
+# ============================ HONAI TOWER CLASS ==============================
+
+class HonaiTower:
+    def __init__(self, n):
+        self.a = [[0] * (n + 3) for _ in range(3)]
+
+        # sentinel top protection
+        self.a[0][0] = self.a[1][0] = self.a[2][0] = n + 1
+
+        self.count = 5 + n * 4
+        self.count1, self.count2, self.count3 = n, 0, 0
+
+        # fill tower 1 with disks n..1
+        p = n
+        for i in range(1, n + 1):
+            self.a[0][i] = p
+            p -= 1
+
+    # ---------------------- Utility: peek top disk -------------------------
+    def peek(self, tower):
+        if tower == 0:
+            return self.a[tower][self.count1]
+        elif tower == 1:
+            return self.a[tower][self.count2]
+        else:
+            return self.a[tower][self.count3]
+
+    # ---------------------- Move disk logic -------------------------
+    def change(self, x, y):
+        if x == 0:
+            cx = self.count1
+        elif x == 1:
+            cx = self.count2
+        else:
+            cx = self.count3
+
+        if y == 0:
+            cy = self.count1
+        elif y == 1:
+            cy = self.count2
+        else:
+            cy = self.count3
+
+        # validate move
+        if self.peek(x) < self.peek(y):
+            temp = self.peek(x)
+            self.a[x][cx] = 0
+
+            # update source top pointer
+            if x == 0: self.count1 -= 1
+            elif x == 1: self.count2 -= 1
+            else: self.count3 -= 1
+
+            # update destination top pointer
+            if y == 0:
+                self.count1 += 1
+                self.a[y][self.count1] = temp
+            elif y == 1:
+                self.count2 += 1
+                self.a[y][self.count2] = temp
+            else:
+                self.count3 += 1
+                self.a[y][self.count3] = temp
+
+            return True
+
+        return False
+
+    # ---------------------- Print tower (same ASCII graphics) -------------------------
+    def print_tower(self):
+        for level in range(len(self.a[0]) - 1, 0, -1):
+            for t in range(3):
+                size = self.a[t][level]
+                spaces = (self.count // 2) - (2 * size)
+
+                print(" " * spaces + "-" * (2 * size) + "|" +
+                      "-" * (2 * size) + " " * spaces, end="")
+            print()
+
+        print("=" * (3 * self.count))
+
+    # ---------------------- User input -------------------------
+    def get_input(self):
+        while True:
+            try:
+                a = int(input("Change from: ")) - 1
+                if a in [0, 1, 2]:
+                    break
+                print("Enter between 1 and 3")
+            except:
+                print("Invalid input")
+
+        while True:
+            try:
+                b = int(input("Change to: ")) - 1
+                if b in [0, 1, 2]:
+                    break
+                print("Enter between 1 and 3")
+            except:
+                print("Invalid input")
+
+        return [a, b]
+
+
+# ============================ Run program ===============================
+
+if __name__ == "__main__":
+    UserProgram().play()
