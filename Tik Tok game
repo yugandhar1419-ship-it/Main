@@ -6,7 +6,7 @@ def print_board(a):
 
 
 def change(n, p, a):
-    # mapping number to board index
+    
     pos = {
         1: (0, 0), 2: (0, 1), 3: (0, 2),
         4: (1, 0), 5: (1, 1), 6: (1, 2),
@@ -26,17 +26,17 @@ def draw_check(a):
 
 
 def check(a):
-    # rows
+    
     for i in range(3):
         if a[i][0] == a[i][1] == a[i][2] and (a[i][0] in ['X', 'O']):
             return False
 
-    # columns
+    
     for j in range(3):
         if a[0][j] == a[1][j] == a[2][j] and (a[0][j] in ['X', 'O']):
             return False
 
-    # diagonals
+    
     if a[0][0] == a[1][1] == a[2][2] and (a[0][0] in ['X', 'O']):
         return False
     if a[0][2] == a[1][1] == a[2][0] and (a[0][2] in ['X', 'O']):
@@ -49,7 +49,7 @@ def play(p1, p2, a):
     num = [1, 2, 3, 4, 5, 6, 7, 8, 9]
 
     while True:
-        # ------------ Player 1 ------------
+        
         while True:
             n = int(input("player1 enter one number (1-9): "))
             if n in num:
@@ -68,7 +68,7 @@ def play(p1, p2, a):
             print("The match is Draw")
             return
 
-        # ------------ Player 2 ------------
+        
         while True:
             n = int(input("player2 enter one number (1-9): "))
             if n in num:
